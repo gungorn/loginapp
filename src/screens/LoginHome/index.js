@@ -1,11 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 const LoginHome = () => {
+    //naviagation prop'un otomatik olarak getirilmesini sağlar
+    //bu sayede manuel olarak çocuk bileşenlere navigaiton prop geçmemize gerek kalmıyor
+    const nav = useNavigation();
+
     return (
         <View style={styles.container}>
             <StatusBar barStyle={'dark-content'} backgroundColor={'#00000022'} />
@@ -15,7 +20,7 @@ const LoginHome = () => {
             <View>
                 <Text style={styles.text1}>See what's happening{'\n'}in the world right now.</Text>
 
-                <TouchableOpacity style={styles.createAccountButton}>
+                <TouchableOpacity onPress={() => nav.navigate('SignUp1')} style={styles.createAccountButton}>
                     <Text style={styles.createAccountButtonText}>Create account</Text>
                 </TouchableOpacity>
             </View>
@@ -24,7 +29,7 @@ const LoginHome = () => {
             <View style={styles.loginButtonContainer}>
                 <Text style={styles.text2}>Have an account alredy?</Text>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => nav.navigate('Login')}>
                     <Text style={styles.loginButtonText}>Log in</Text>
                 </TouchableOpacity>
             </View>
