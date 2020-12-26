@@ -5,6 +5,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
+import { observer } from 'mobx-react';
+
+import { loginStore, signUp1Store } from '../../store';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -26,10 +29,14 @@ const header = () => {
     );
 }
 
-const SignUp1 = () => {
+const SignUp1 = observer(() => {
     nav = useNavigation();
 
-    const [name, setName] = React.useState('');
+    //bu şekilde dahi çalışabilir
+    //const [name, setName] = [signUp1Store.name, signUp1Store.setName];
+
+    const { name, setName } = signUp1Store;
+
 
     return (
         <View style={styles.container}>
@@ -80,7 +87,7 @@ const SignUp1 = () => {
             </View>
         </View>
     );
-}
+});
 
 const styles = StyleSheet.create({
     container: {

@@ -5,6 +5,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
+import { observer } from 'mobx-react';
+import { loginStore } from '../../store';
+
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -21,7 +24,10 @@ const header = () => {
 
             <View style={{ flex: 1 }} />
 
-            <AntDesign name={'twitter'} size={width * 0.06} color={'#1DA1F2'} />
+            <TouchableOpacity onPress={loginStore.classSet}>
+                <AntDesign name={'twitter'} size={width * 0.06} color={'#1DA1F2'} />
+            </TouchableOpacity>
+
 
             <TouchableOpacity style={headerStyles.signUpButton}>
                 <Text style={headerStyles.signUpButtonText}>Sign up</Text>
@@ -30,13 +36,13 @@ const header = () => {
             <TouchableOpacity>
                 <Entypo name={'dots-three-vertical'} color={'#1DA1F2'} size={width * 0.07} />
             </TouchableOpacity>
-        </View>
+        </View >
     );
 }
 
-const Login = () => {
-    const [focusedInput, setFocusedInput] = React.useState(-1);
-    const [passwordShown, setPasswordShown] = React.useState(false);
+const Login = observer(() => {
+    const [focusedInput, setFocusedInput] = React.useState(-1); //bu state'i store'da tutmanın mantığı yok!
+    const [passwordShown, setPasswordShown] = React.useState(false); //bu state'i store'da tutmanın mantığı yok!
 
     nav = useNavigation();
 
@@ -57,6 +63,8 @@ const Login = () => {
                     ref={d => { input0Ref = d }}
                     style={styles.input}
                     onFocus={() => setFocusedInput(0)}
+                    value={loginStore.username}
+                    onChangeText={loginStore.setUsername}
                 />
             </TouchableOpacity>
 
@@ -74,6 +82,8 @@ const Login = () => {
                     onFocus={() => setFocusedInput(1)}
                     secureTextEntry={!passwordShown}
                     returnKeyType={'done'}
+                    value={loginStore.password}
+                    onChangeText={loginStore.setPassword}
                 />
 
                 <TouchableOpacity style={styles.eyeButton} onPress={() => setPasswordShown(!passwordShown)}>
@@ -95,7 +105,7 @@ const Login = () => {
             </View>
         </View>
     );
-}
+});
 
 const styles = StyleSheet.create({
     container: {
