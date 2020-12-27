@@ -5,6 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
+import Modal from 'react-native-modal';
 import { observer } from 'mobx-react';
 import { connect } from 'react-redux';
 
@@ -19,30 +20,6 @@ let input0Ref, input1Ref, nav;
 let t1, t2;
 
 
-const header = () => {
-    return (
-        <View style={headerStyles.container}>
-            <TouchableOpacity onPress={() => nav.goBack()}>
-                <Ionicons name={'arrow-back'} color={'#1DA1F2'} size={width * 0.07} />
-            </TouchableOpacity>
-
-            <View style={{ flex: 1 }} />
-
-            <TouchableOpacity onPress={loginStore.classSet}>
-                <AntDesign name={'twitter'} size={width * 0.06} color={'#1DA1F2'} />
-            </TouchableOpacity>
-
-
-            <TouchableOpacity style={headerStyles.signUpButton}>
-                <Text style={headerStyles.signUpButtonText}>Sign up</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-                <Entypo name={'dots-three-vertical'} color={'#1DA1F2'} size={width * 0.07} />
-            </TouchableOpacity>
-        </View >
-    );
-}
 
 const Login = observer((props) => {
     t1 = new Date().getTime();
@@ -54,14 +31,89 @@ const Login = observer((props) => {
 
     const [focusedInput, setFocusedInput] = React.useState(-1); //bu state'i store'da tutmanın mantığı yok!
     const [passwordShown, setPasswordShown] = React.useState(false); //bu state'i store'da tutmanın mantığı yok!
+    const [modalShown, setModalShown] = React.useState(true);
 
     nav = useNavigation();
 
     //console.log(props);
 
+
+    const modalBox = () => {
+        return (
+            <Modal
+                isVisible={modalShown}
+                backdropOpacity={0.5}
+                statusBarTranslucent
+                onBackButtonPress={() => setModalShown(false)}
+                onBackdropPress={() => setModalShown(false)}
+            >
+                <View style={styles.modalContainer}>
+                    <Text
+                        style={{
+                            color: '#4287f5',
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            paddingBottom: '3%',
+                            marginBottom: '3%',
+                            borderBottomWidth: 1,
+                            borderColor: '#4287f588'
+                        }}>Esse non ipsum aute.</Text>
+                    <Text
+                        style={{
+                            color: '#4287f5bb',
+                            fontSize: 18,
+                            //flex: 1,
+                            textAlign: 'center',
+                            textAlignVertical: 'center',
+                            marginBottom: '3%'
+                        }}
+                    >Aute mollit laboris enim cillum exercitation anim Lorem labore aliquip aliqua cupidatat.</Text>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        <TouchableOpacity onPress={() => setModalShown(false)}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#ff6524' }}>Hayır</Text>
+                        </TouchableOpacity>
+
+                        <View style={{ width: 20 }} />
+
+                        <TouchableOpacity>
+                            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#4287f5' }}>Evet</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+    const header = () => {
+        return (
+            <View style={headerStyles.container}>
+                <TouchableOpacity onPress={() => nav.goBack()}>
+                    <Ionicons name={'arrow-back'} color={'#1DA1F2'} size={width * 0.07} />
+                </TouchableOpacity>
+
+                <View style={{ flex: 1 }} />
+
+                <TouchableOpacity onPress={loginStore.classSet}>
+                    <AntDesign name={'twitter'} size={width * 0.06} color={'#1DA1F2'} />
+                </TouchableOpacity>
+
+
+                <TouchableOpacity style={headerStyles.signUpButton}>
+                    <Text style={headerStyles.signUpButtonText}>Sign up</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => setModalShown(true)}>
+                    <Entypo name={'dots-three-vertical'} color={'#1DA1F2'} size={width * 0.07} />
+                </TouchableOpacity>
+            </View >
+        );
+    }
+
+
     return (
         <View style={styles.container}>
             {header()}
+            {modalBox()}
 
             <Text style={styles.text1}>Log in to Twitter.</Text>
 
@@ -180,6 +232,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: '#fff'
+    },
+
+
+    modalContainer: {
+        width: '100%',
+        //height: '35%',
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: '5%'
     }
 });
 
