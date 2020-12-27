@@ -6,13 +6,17 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import { observer } from 'mobx-react';
+import { connect } from 'react-redux';
+
 import { loginStore } from '../../store';
 
+import ReduxStore from '../../redux/reduxStore';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 let input0Ref, input1Ref, nav;
+let t1, t2;
 
 
 const header = () => {
@@ -40,11 +44,20 @@ const header = () => {
     );
 }
 
-const Login = observer(() => {
+const Login = observer((props) => {
+    t1 = new Date().getTime();
+    React.useEffect(() => {
+        t2 = new Date().getTime();
+
+        console.log('TEST', t2 - t1);
+    });
+
     const [focusedInput, setFocusedInput] = React.useState(-1); //bu state'i store'da tutmanın mantığı yok!
     const [passwordShown, setPasswordShown] = React.useState(false); //bu state'i store'da tutmanın mantığı yok!
 
     nav = useNavigation();
+
+    //console.log(props);
 
     return (
         <View style={styles.container}>
@@ -65,6 +78,8 @@ const Login = observer(() => {
                     onFocus={() => setFocusedInput(0)}
                     value={loginStore.username}
                     onChangeText={loginStore.setUsername}
+                //value={props.LoginReducer.userName}
+                //onChangeText={d => ReduxStore.dispatch({ type: 'SET_USERNAME', payload: d })}
                 />
             </TouchableOpacity>
 
@@ -168,7 +183,6 @@ const styles = StyleSheet.create({
     }
 });
 
-
 const headerStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
@@ -189,4 +203,8 @@ const headerStyles = StyleSheet.create({
     }
 });
 
-export { Login };
+//const mapStateToProps = reducers => ({ LoginReducer: reducers.LoginReducer });
+const mapStateToProps = ({ LoginReducer }) => ({ LoginReducer });
+const _Login = connect(mapStateToProps)(Login);
+
+export { _Login as Login };

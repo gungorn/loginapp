@@ -1,9 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
+import { Provider } from 'react-redux';
+
 
 import { Navigation } from './Navigation';
-
 import { Splash } from './screens';
+
+import store from './redux/reduxStore';
 
 const App = () => {
     const [splash, setSplash] = React.useState(true);
@@ -13,12 +16,14 @@ const App = () => {
     }, []);
 
     return (
-        <View style={{ flex: 1 }}>
+        <Provider store={store}>
+            <View style={{ flex: 1 }}>
 
-            {/* KOŞUL ? TRUE İSE YAPILACAK : FALSE İSE YAPILACAK */}
-            {splash ? <Splash /> : <Navigation />}
+                {/* KOŞUL ? TRUE İSE YAPILACAK : FALSE İSE YAPILACAK */}
+                {splash ? <Splash /> : <Navigation />}
 
-        </View>
+            </View>
+        </Provider>
     );
 }
 
